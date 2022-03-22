@@ -127,8 +127,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(id == R.id.openMapApp){
             Uri.Builder builder = new Uri.Builder();
-            builder.scheme("geo").opaquePart("0.0" ).appendQueryParameter( "q" ,locatio
-                    n);
+            String location = "1600 Amphitheatre Parkway CA";
+            builder.scheme("geo").opaquePart("0.0" ).appendQueryParameter( "q" ,location);
             Uri geoLocation = builder.build();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(geoLocation);
@@ -150,11 +150,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause () {
         super .onPause();
+        //TODO 4.8 store the exchange rate using the putString method with a key
         SharedPreferences.Editor preferencesEditor =
                 mPreferences.edit();
         preferencesEditor.putString(RATE_KEY, String.valueOf(exchangeRate));
         preferencesEditor.apply();
     }
-    //TODO 4.8 store the exchange rate using the putString method with a key
+
 
 }
