@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 
@@ -39,8 +41,28 @@ public class SubActivity extends AppCompatActivity {
             String a = editTextSubValueOfA.getText().toString().trim();
             String b = editTextSubValueOfB.getText().toString().trim();
             //TODO 3.9 Check that these values are valid --> See the Utils class
-            Utils.checkInvalidInputs(a);
-            Utils.checkInvalidInputs(b);
+            try{
+                Utils.checkInvalidInputs(a);
+            }
+            catch(NumberFormatException e){
+                Log.i(SubActivity.class.toString(), "SubValueOfA is empty");
+                Toast.makeText(SubActivity.this, R.string.warning_numberformat_edit_text_sub_a, Toast.LENGTH_SHORT).show();
+
+            }
+            catch (IllegalArgumentException e) {
+                Log.i(SubActivity.class.toString(), "SubValueOfA is an illegal argument");
+                Toast.makeText(SubActivity.this, R.string.warning_illegal_edit_text_sub_a, Toast.LENGTH_SHORT).show();
+            }
+            try {
+                Utils.checkInvalidInputs(b);
+            } catch (NumberFormatException e) {
+                Log.i(SubActivity.class.toString(), "SubValueOfB is empty");
+                Toast.makeText(SubActivity.this, R.string.warning_numberformat_edit_text_sub_b, Toast.LENGTH_SHORT).show();
+            } catch (IllegalArgumentException e) {
+                Log.i(SubActivity.class.toString(), "SubValueOfB is an illegal argument");
+                Toast.makeText(SubActivity.this, R.string.warning_illegal_edit_text_sub_b, Toast.LENGTH_SHORT).show();
+            }
+
             //TODO 3.10 Set up an explicit intent and pass the exchange rate back to MainActivity
             Intent intent = new Intent(SubActivity.this, MainActivity.class);
             intent.putExtra(A_KEY, a);

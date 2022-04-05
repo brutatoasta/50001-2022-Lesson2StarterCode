@@ -5,4 +5,8 @@
     <string name="main_activity_name">Convert Currency</string>
     <string name="sub_activity_name">Buy / Sell</string>
     <string name="openMapApp">Open Map App</string>
+    <string name="warning_illegal_edit_text_sub_a">Please enter a positive number in Unit of foreign currency text box</string>
+    <string name="warning_illegal_edit_text_sub_b">Please enter a positive number in Unit of home currency text box</string>
+    <string name="warning_numberformat_edit_text_sub_a">Please enter a number in Unit of foreign currency text box</string>
+    <string name="warning_numberformat_edit_text_sub_b">Please enter a number in Unit of home currency text box</string>
 </resources>

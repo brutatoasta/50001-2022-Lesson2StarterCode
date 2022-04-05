@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.norman_lee.myapplication">
 
     <application
@@ -19,7 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SubActivity"
+        <activity
+            tools:targetApi="jelly_bean"
+            android:name=".SubActivity"
             android:parentActivityName=".MainActivity"
             android:label="@string/sub_activity_name"></activity>
     </application>

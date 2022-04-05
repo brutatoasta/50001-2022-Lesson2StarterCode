@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences mPreferences;
     private String sharedPrefFile = "com.example.android.mainsharedprefs";
     public static final String RATE_KEY = "Rate_Key";
-
+    ExchangeRate e;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +42,26 @@ public class MainActivity extends AppCompatActivity {
         mPreferences = getSharedPreferences(sharedPrefFile,
                 MODE_PRIVATE);
         //TODO 4.6 Retrieve the value using the key, and set a default when there is none
-        String Rate_text = mPreferences.getString(RATE_KEY,"0");
+        String Rate_text = mPreferences.getString(RATE_KEY, "3.95");
         //TODO 3.13 Get the intent, retrieve the values passed to it, and instantiate the ExchangeRate class
         Intent intent = getIntent();
-        String a = intent.getStringExtra("A_KEY");
-        String b = intent.getStringExtra("B_KEY");
-        ExchangeRate e = new ExchangeRate(a,b);
+        if (intent != null) {
+            String a = intent.getStringExtra("A_KEY");
+            String b = intent.getStringExtra("B_KEY");
+            if (a != null && b != null) {
+                e = new ExchangeRate(a, b);
+                Log.i(MainActivity.class.toString(), a);
+                Log.i(MainActivity.class.toString(), b);
+            } else {
+                Log.i(MainActivity.class.toString(), "values are null");
+                e = new ExchangeRate(Rate_text);
+            }
+        }
+        else{
+            Log.i(MainActivity.class.toString(), "no intent");
+            e = new ExchangeRate(Rate_text);
+        }
+
         //TODO 3.13a See ExchangeRate class --->
 
         //TODO 2.1 Use findViewById to get references to the widgets in the layout
@@ -109,7 +123,15 @@ public class MainActivity extends AppCompatActivity {
     //TODO 5.1 Go to res/menu/menu_main.xml and add a menu item Open Map App
     //TODO 5.2 In onOptionsItemSelected, add a new if-statement
     //TODO 5.3 code the Uri object and set up the intent
-
+    private void launchMap(){
+        Uri.Builder builder = new Uri.Builder();
+        String location = "1600 Amphitheatre Parkway CA";
+        builder.scheme("geo").opaquePart("0.0" ).appendQueryParameter( "q" ,location);
+        Uri geoLocation = builder.build();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+        if ( intent.resolveActivity(getPackageManager()) != null ) startActivity(intent);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -122,17 +144,14 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.setExchangeRate){
+
             startActivity(new Intent(MainActivity.this, SubActivity.class));
             return true;
         }
         else if(id == R.id.openMapApp){
-            Uri.Builder builder = new Uri.Builder();
-            String location = "1600 Amphitheatre Parkway CA";
-            builder.scheme("geo").opaquePart("0.0" ).appendQueryParameter( "q" ,location);
-            Uri geoLocation = builder.build();
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(geoLocation);
-            if ( intent.resolveActivity(getPackageManager()) != null ) startActivity(intent);
+            //put this in a new method
+            this.launchMap();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -145,7 +164,17 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO 4.3 override the methods in the Android Activity Lifecycle here
     //TODO 4.4 for each of them, write a suitable string to display in the Logcat
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(MainActivity.class.toString(), "onStart");
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(MainActivity.class.toString(), "onResume");
+    }
     //TODO 4.7 In onPause, get a reference to the SharedPreferences.Editor object
     @Override
     protected void onPause () {
@@ -155,6 +184,24 @@ public class MainActivity extends AppCompatActivity {
                 mPreferences.edit();
         preferencesEditor.putString(RATE_KEY, String.valueOf(exchangeRate));
         preferencesEditor.apply();
+        Log.i(MainActivity.class.toString(), "onPause");
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(MainActivity.class.toString(), "onStop");
+    }
+
+    @Override
+    public void onRestart () {
+        super.onRestart();
+        Log.i(MainActivity.class.toString(), "onRestart");
+    }
+
+    @Override
+    public void onDestroy () {
+        super.onDestroy();
+        Log.i(MainActivity.class.toString(), "onDestroy");
     }
 
 
